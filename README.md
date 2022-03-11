@@ -17,7 +17,7 @@ Tinycore Redpill Esxi config Support Tool
 
 5. Check Directory location
 
-   > pwd
+   > pwd<br>
    > /home/tc
 
 6. Decompress file & check file:
