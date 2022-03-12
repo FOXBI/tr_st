@@ -1,6 +1,10 @@
 # tr_est
 Tinycore Redpill Esxi config Support Tool
 
+# VMWare ESXi Setting
+SATA Contoller 0:0 -> Tinycore Disk Image
+SATA Controller 1:0 -> DATA Disk Iamge
+
 # Howto Run
 
 1. Download attached file on your PC (tr_est.tar)
