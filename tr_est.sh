@@ -1,5 +1,5 @@
 #!/bin/bash
-ver="0.9.0-01"
+ver="0.9.0-b01"
 #
 # Made by FOXBI
 # 2022.03.12
