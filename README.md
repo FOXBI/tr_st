@@ -2,7 +2,7 @@
 Tinycore Redpill Esxi config Support Tool
 
 # VMWare ESXi Setting
-SATA Contoller 0:0 -> Tinycore Disk Image<br>
+SATA Controller 0:0 -> Tinycore Disk Image<br>
 SATA Controller 1:0 -> DATA Disk Iamge
 
 # Howto Run
