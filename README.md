@@ -46,3 +46,4 @@ https://github.com/pocopico/tinycore-redpill
 
 # Reference Screeshot
 
+![image](https://user-images.githubusercontent.com/42568682/158012257-db57387d-0cc3-4610-814a-a00e2c596677.png)
