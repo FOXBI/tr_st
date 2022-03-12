@@ -24,15 +24,13 @@ Tinycore Redpill Esxi config Support Tool
 
    > tar xvf tr_est.tar<br>
    > ls -lrt
-   > chmod 755 tr_est
+   > chmod 755 tr_est.sh
 
    (check root’s run auth)
 
-7. Run to Binary file
+7. Run to Source file
 
-   > ./tr_est<br>
-   or<br>
-   > ./tr_est.sh (If you want, you can use it as a source file)
+   > ./tr_est.sh Meldelname<br>
  
 8. When you execute it, proceed according to the description that is output.
 
