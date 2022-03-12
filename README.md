@@ -30,7 +30,9 @@ Tinycore Redpill Esxi config Support Tool
 
 7. Run to Source file
 
-   > ./tr_est.sh Meldelname<br>
+   > ./tr_est.sh (Moldelname<br>
+
+   eg. ./tr_est.sh DS3622xs+
  
 8. When you execute it, proceed according to the description that is output.
 
