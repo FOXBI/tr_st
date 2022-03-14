@@ -8,7 +8,7 @@ SATA Controller 1:0 -> Tinycore Disk Image<br>
 
 # Howto Run
 
-1. Download attached file on your PC (tr_est.tar)
+1. Download attached file on your PC (tr_st.tar)
 
 2. Upload file to your Tinycore for redpill (by sftp....)
 
@@ -29,7 +29,7 @@ SATA Controller 1:0 -> Tinycore Disk Image<br>
 
    > tar xvf tr_st.tar<br>
    > ls -lrt
-   > chmod 755 tr_est.sh
+   > chmod 755 tr_st.sh
 
    (check root’s run auth)
 
