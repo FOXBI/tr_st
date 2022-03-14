@@ -1,0 +1,12 @@
+### Change LOG ###
+
+## Update v.0.9.9-r01 - 2022.03.15
+- Chage file name tr_est.sh -> tr_st.sh
+- Modified to enable not only ESXi, but also general methods
+- Change to proceed by selecting model, platform, and driver
+
+## Update v.0.9.8-b02 - 2022.03.14
+- Add Interactive mothod 
+
+## Create v.0.9.0-b01 - 2022.03.12
+- Create tr_est.sh For ESXi
