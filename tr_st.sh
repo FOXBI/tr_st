@@ -81,9 +81,9 @@ then
 
     if [ "$CNT_DK" -eq "2" ]
     then
-        grep -r "hd0,msdos" --exclude=\*.img --exclude=\*.tar ./ | egrep "latestrploader.sh|rploader.sh|$CMODEL" | grep -v "tr_est" | awk -F: '{ print "sed -i \"s\/hd0,msdos\/hd1,msdos\/g\" "$1 }' | sh
+        grep -r "hd0,msdos" --exclude=\*.img --exclude=\*.tar ./ | egrep "latestrploader.sh|rploader.sh|$CMODEL" | grep -v "tr_st" | awk -F: '{ print "sed -i \"s\/hd0,msdos\/hd1,msdos\/g\" "$1 }' | sh
     else
-        grep -r "hd1,msdos" --exclude=\*.img --exclude=\*.tar ./ | egrep "latestrploader.sh|rploader.sh|$CMODEL" | grep -v "tr_est" | awk -F: '{ print "sed -i \"s\/hd1,msdos\/hd0,msdos\/g\" "$1 }' | sh
+        grep -r "hd1,msdos" --exclude=\*.img --exclude=\*.tar ./ | egrep "latestrploader.sh|rploader.sh|$CMODEL" | grep -v "tr_st" | awk -F: '{ print "sed -i \"s\/hd1,msdos\/hd0,msdos\/g\" "$1 }' | sh
     fi
     sleep 2
     echo ""
