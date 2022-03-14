@@ -2,8 +2,9 @@
 Tinycore Redpill Esxi config Support Tool
 
 # VMWare ESXi Setting
-SATA Controller 0:0 -> Tinycore Disk Image<br>
-SATA Controller 1:0 -> DATA Disk Iamge
+SATA Controller 0:0 -> DATA Disk Iamge
+SATA Controller 1:0 -> Tinycore Disk Image<br>
+
 
 # Howto Run
 
@@ -26,7 +27,7 @@ SATA Controller 1:0 -> DATA Disk Iamge
 
 6. Decompress file & check file:
 
-   > tar xvf tr_est.tar<br>
+   > tar xvf tr_st.tar<br>
    > ls -lrt
    > chmod 755 tr_est.sh
 
@@ -34,9 +35,7 @@ SATA Controller 1:0 -> DATA Disk Iamge
 
 7. Run to Source file
 
-   > ./tr_est.sh (Moldelname<br>
-
-   eg. ./tr_est.sh DS3622xs+
+   > ./tr_st.sh <br>
  
 8. When you execute it, proceed according to the description that is output.
 
