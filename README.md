@@ -1,9 +1,9 @@
 # tr_st
-Tinycore Redpill Esxi config Support Tool
+Tinycore Redpill Support Tool
 
 # VMWare ESXi Setting
-SATA Controller 0:0 -> DATA Disk Iamge
-SATA Controller 1:0 -> Tinycore Disk Image<br>
+SATA Controller 0:0 -> DATA Disk Iamge<br>
+SATA Controller 1:0 -> Tinycore Disk Image
 
 
 # Howto Run
@@ -49,4 +49,4 @@ https://github.com/pocopico/tinycore-redpill
 
 # Reference Screeshot
 
-![image](https://user-images.githubusercontent.com/42568682/158012257-db57387d-0cc3-4610-814a-a00e2c596677.png)
+
