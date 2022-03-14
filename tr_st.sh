@@ -1,5 +1,5 @@
 #!/bin/bash
-ver="0.9.8-b02"
+ver="0.9.9-r01"
 #
 # Made by FOXBI
 # 2022.03.15
@@ -159,9 +159,9 @@ CNT_TC=`fdisk -l | grep "*" | grep sda1 | wc -l`
 
 if [ "$CNT_DK" -eq "2" ] || [ "$CNT_TC" -eq "0" ]
 then
-    grep -r "hd0,msdos" --exclude=\*.img --exclude=\*.tar ./ | egrep "latestrploader.sh|rploader.sh|$CMODEL" | grep -v "tr_est" | awk -F: '{ print "sed -i \"s\/hd0,msdos\/hd1,msdos\/g\" "$1 }' | sh
+    grep -r "hd0,msdos" --exclude=\*.img --exclude=\*.tar ./ | egrep "latestrploader.sh|rploader.sh|$CMODEL" | grep -v "tr_st" | awk -F: '{ print "sed -i \"s\/hd0,msdos\/hd1,msdos\/g\" "$1 }' | sh
 else
-    grep -r "hd1,msdos" --exclude=\*.img --exclude=\*.tar ./ | egrep "latestrploader.sh|rploader.sh|$CMODEL" | grep -v "tr_est" | awk -F: '{ print "sed -i \"s\/hd1,msdos\/hd0,msdos\/g\" "$1 }' | sh
+    grep -r "hd1,msdos" --exclude=\*.img --exclude=\*.tar ./ | egrep "latestrploader.sh|rploader.sh|$CMODEL" | grep -v "tr_st" | awk -F: '{ print "sed -i \"s\/hd1,msdos\/hd0,msdos\/g\" "$1 }' | sh
 fi
 sleep 2
 echo ""
