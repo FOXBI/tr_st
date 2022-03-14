@@ -1,4 +1,4 @@
-# tr_est
+# tr_st
 Tinycore Redpill Esxi config Support Tool
 
 # VMWare ESXi Setting
