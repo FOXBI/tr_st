@@ -43,7 +43,10 @@ enter 'F10' Continue Tinycore booting.
 
 If you set up VM like this and proceed, Data Disk will be defined as drive 1 in the DSM storage later. (In case of SCSI, define from drive 2)
 
- 
+made a video of the config process. 
+
+[![tr_st](http://img.youtube.com/vi/6MyYtv1X52g/0.jpg)](https://youtu.be/6MyYtv1X52g) 
+
 
 # Howto Run
 =============================================================
@@ -113,5 +116,5 @@ Follow the instructions to install (DS3622xs+ example)
 
 made a video of the setup process.
    
-[![tr_st](http://img.youtube.com/vi/vFpc3Rb2m4A/0.jpg)](https://youtu.be/vFpc3Rb2m4A?t=0s) 
+[![tr_st](http://img.youtube.com/vi/yRTcdOK6-Ok/0.jpg)](https://youtu.be/yRTcdOK6-Ok) 
    
