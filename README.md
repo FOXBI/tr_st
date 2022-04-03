@@ -65,11 +65,7 @@ made a video of the config process.
 3. Connect to ssh by tc account.
  
 
-4. Switch user to root:
-
-   sudo su 
-
-   (No password required)
+4. Progress as tc user. 
  
 
 5. Edit user_config.json
