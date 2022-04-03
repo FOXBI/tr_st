@@ -1,8 +1,8 @@
 #!/bin/bash
-ver="1.3.5-r01"
+ver="1.4.6-r01"
 #
 # Made by FOXBI
-# 2022.03.28 
+# 2022.04.03
 #
 # ==============================================================================
 # Y or N Function
@@ -68,28 +68,54 @@ cecho c "Tinycore Rploader Support Tool ver. \033[0;31m"$ver"\033[00m - FOXBI"
 echo ""
 $CURDIR/rploader.sh update now
 echo ""
-cecho c "Redpill Clean repository ..."
-echo ""
-$CURDIR/rploader.sh clean now
-echo ""
-# ==============================================================================
-# Model Name Select
-# ==============================================================================
-echo -e "\033[0;31mDo you want to install using the old method?\033[00m" | tr '\n' ' '
+echo -e "\033[0;31mDo you want to install using the old method?\033[0;33m(if you want update 7.1.0-42621 choose y)\033[00m" | tr '\n' ' '
 READ_YN "Y/N : "
 OLDCHK=$Y_N
 if [ "$OLDCHK" == "Y" ] || [ "$OLDCHK" == "y" ]
 then
     SYNOCHK=y
+    echo ""
+    echo -e "\033[0;31m7.1.0-42621 Update in progress ?\033[00m" | tr '\n' ' '
+    READ_YN "Y/N : "
+    UPTCHK=$Y_N
+    if [ "$UPTCHK" == "Y" ] || [ "$UPTCHK" == "y" ]
+    then
+        UPTCHK=y
+    elif [ "$UPTCHK" == "N" ] || [ "$UPTCHK" == "n" ]
+    then
+        UPTCHK=n
+    else
+        echo ""
+        echo "Wrong choice. please run again..."
+        echo ""    
+        exit 0
+    fi
 elif [ "$OLDCHK" == "N" ] || [ "$OLDCHK" == "n" ]
 then
     SYNOCHK=`nslookup archive.synology.com 2>&1 > /dev/null`
+    UPTCHK=n
 else
     echo ""
     echo "Wrong choice. please run again..."
     echo ""    
     exit 0
 fi
+
+if [ "$UPTCHK" == "y" ]
+then
+    cecho c "Redpill 7.1.0-42621 update in preparation ..."
+    echo ""
+    $CURDIR/rploader.sh backuploader now
+    echo ""
+else
+    cecho c "Redpill Clean repository ..."
+    echo ""
+    $CURDIR/rploader.sh clean now
+    echo ""
+fi
+# ==============================================================================
+# Model Name Select
+# ==============================================================================
 ACNT=
 BCNT=
 ARRAY=()
@@ -194,7 +220,7 @@ fi
 # ==============================================================================
 # Platform Select
 # ==============================================================================
-if [ ! -d $CURDIR/redpill-load ]
+if [ ! -d $CURDIR/redpill-load ] || [ "$UPTCHK" == "y" ]
 then
     if [ "$SYNOCHK" == "" ]
     then
@@ -269,9 +295,19 @@ then
             DCNT=$(($CCNT%3))
             if [ "$DCNT" -eq "0" ]
             then
-                CRRAY+=("$CCNT) $LINE_C\ln");
+                if [[ "${CRRAY[@]}" =~ "7.1." ]] && [ "$UPTCHK" == "y" ]
+                then
+                    CRRAY+=("\033[0;31m$CCNT) $LINE_C\ln\033[00m");
+                else
+                    CRRAY+=("$CCNT) $LINE_C\ln");
+                fi
             else
-                CRRAY+=("$CCNT) $LINE_C\lt");
+                if [[ "${CRRAY[@]}" =~ "7.1." ]] && [ "$UPTCHK" == "y" ]
+                then
+                    CRRAY+=("\033[0;31m$CCNT) $LINE_C\lt\033[00m");
+                else
+                    CRRAY+=("$CCNT) $LINE_C\lt");
+                fi            
             fi
         done < <(ls -l $CURDIR/redpill-load/config/$AMODEL | grep -v total | awk '{print $9}')
 
@@ -287,7 +323,7 @@ then
             for (( i = 0; i < $CCNT; i++)); do
                 if [ "$C_O" == $i ]
                 then
-                    export CVERSION=`echo "${CRRAY[$i]}" | sed 's/\\\ln//g' | sed 's/\\\lt//g' | awk '{print $2}'`
+                    export CVERSION=`echo "${CRRAY[$i]}" | sed 's/\\\ln/ /g' | sed 's/\\\lt/ /g' | awk '{print $2}'`
                 fi
             done
         else
@@ -313,8 +349,8 @@ then
     sleep 1
     echo ""
     cecho c "Change Config File....."
-    GCNT=`fdisk -l /dev/sda | grep fd | wc -l`
-    HCNT=`fdisk -l | grep "*" | grep sda1 | wc -l`
+    GCNT=`sudo fdisk -l /dev/sda | grep fd | wc -l`
+    HCNT=`sudo fdisk -l | grep "*" | grep sda1 | wc -l`
 
     if [ "$GCNT" -eq "2" ] || [ "$HCNT" -eq "0" ]
     then
@@ -344,6 +380,11 @@ then
             sed -i "s/USB/SATA/g" $CURDIR/redpill-load/config/$AMODEL/$CVERSION/config.json
             sed -i "s/SATA1/USB/g" $CURDIR/redpill-load/config/$AMODEL/$CVERSION/config.json
 
+            if [ "$UPTCHK" == "y" ]
+            then                                            
+                sed -i "s/v7.0.1-42218/v7.1.0-42621/g" $CURDIR/redpill-load/config/$AMODEL/$CVERSION/config.json
+            fi
+
             BCHECKN=$(($HCHECK2 - 1))
             sed -i "${BCHECKN}d" $CURDIR/redpill-load/config/$AMODEL/$CVERSION/config.json
             
@@ -362,71 +403,92 @@ echo ""
 cecho c "Completed !! Run to rploader.sh !!"
 sleep 1
 # ==============================================================================
+# 7.0.1-42218 Upgrade
+# ==============================================================================
+if [ "$UPTCHK" == "y" ]
+then
+    if [ "$EVERSION" == "broadwellnk-7.0.1-42218" ]
+    then
+        $CURDIR/rploader.sh ext $EVERSION add https://github.com/jumkey/redpill-load/raw/develop/redpill-misc/rpext-index.json
+    fi
+    echo ""
+    cecho y "Please select Y/n for both questions !!!"
+    echo ""
+    cecho y "Please select Y/n for both questions !!!"
+    echo ""
+    cecho y "Please select Y/n for both questions !!!"
+    echo ""
+    sleep 3
+    $CURDIR/rploader.sh postupdate $EVERSION
+    echo ""
+else
+# ==============================================================================
 # Clear extension & install extension driver
 # ==============================================================================
-echo ""
-cecho c "Delete extension file..."
-rm -rf $CURDIR/redpill-load/custom/extensions/*
-echo ""
-cecho r "Add to Driver Repository..."
-echo ""
-READ_YN "Do you want Add Driver? Y/N :  "
-ICHK=$Y_N
-while [ "$ICHK" == "y" ] || [ "$ICHK" == "Y" ]
-do
-    ICNT=
-    JCNT=
-    IRRAY=()
-    while read LINE_I;
-    do
-        ICNT=$(($ICNT + 1))
-        JCNT=$(($ICNT%5))
-        if [ "$JCNT" -eq "0" ]
-        then
-            IRRAY+=("$ICNT) $LINE_I\ln");
-        else
-            IRRAY+=("$ICNT) $LINE_I\lt");
-        fi
-    done < <(curl --no-progress-meter https://github.com/pocopico/rp-ext | grep "raw.githubusercontent.com" | awk '{print $2}' | awk -F= '{print $2}' | sed "s/\"//g" | awk -F/ '{print $7}')
-        echo ""
-        echo -e " ${IRRAY[@]}" | sed 's/\\ln/\n/g' | sed 's/\\lt/\t/g'
-        echo ""
-        read -n3 -p " -> Select Number Enter : " I_O
-        echo ""
-        I_O=$(($I_O - 1))
-        for (( i = 0; i < $ICNT; i++)); do
-            if [ "$I_O" == $i ]
-            then
-                export IEXT=`echo "${IRRAY[$i]}" | sed 's/\\\ln//g' | sed 's/\\\lt//g' | awk '{print $2}'`
-            fi
-        done
-    $CURDIR/rploader.sh ext $EVERSION add https://raw.githubusercontent.com/pocopico/rp-ext/master/$IEXT/rpext-index.json
     echo ""
-    READ_YN "Do you want add driver? Y/N :  "
+    cecho c "Delete extension file..."
+    rm -rf $CURDIR/redpill-load/custom/extensions/*
+    echo ""
+    cecho r "Add to Driver Repository..."
+    echo ""
+    READ_YN "Do you want Add Driver? Y/N :  "
     ICHK=$Y_N
-done
-echo ""
+    while [ "$ICHK" == "y" ] || [ "$ICHK" == "Y" ]
+    do
+        ICNT=
+        JCNT=
+        IRRAY=()
+        while read LINE_I;
+        do
+            ICNT=$(($ICNT + 1))
+            JCNT=$(($ICNT%5))
+            if [ "$JCNT" -eq "0" ]
+            then
+                IRRAY+=("$ICNT) $LINE_I\ln");
+            else
+                IRRAY+=("$ICNT) $LINE_I\lt");
+            fi
+        done < <(curl --no-progress-meter https://github.com/pocopico/rp-ext | grep "raw.githubusercontent.com" | awk '{print $2}' | awk -F= '{print $2}' | sed "s/\"//g" | awk -F/ '{print $7}')
+            echo ""
+            echo -e " ${IRRAY[@]}" | sed 's/\\ln/\n/g' | sed 's/\\lt/\t/g'
+            echo ""
+            read -n3 -p " -> Select Number Enter : " I_O
+            echo ""
+            I_O=$(($I_O - 1))
+            for (( i = 0; i < $ICNT; i++)); do
+                if [ "$I_O" == $i ]
+                then
+                    export IEXT=`echo "${IRRAY[$i]}" | sed 's/\\\ln//g' | sed 's/\\\lt//g' | awk '{print $2}'`
+                fi
+            done
+        $CURDIR/rploader.sh ext $EVERSION add https://raw.githubusercontent.com/pocopico/rp-ext/master/$IEXT/rpext-index.json
+        echo ""
+        READ_YN "Do you want add driver? Y/N :  "
+        ICHK=$Y_N
+    done
+    echo ""
 # ==============================================================================
 # Build to boot image by rploader
 # ==============================================================================
-cecho r "Select N/n newer version exists on the repo !!"
-echo ""
-cecho r "Select N/n newer version exists on the repo !!"
-echo ""
-cecho r "Select N/n newer version exists on the repo !!"
-echo ""
-sleep 2
-$CURDIR/rploader.sh build $EVERSION
-echo ""
+    cecho r "Select N/n newer version exists on the repo !!"
+    echo ""
+    cecho r "Select N/n newer version exists on the repo !!"
+    echo ""
+    cecho r "Select N/n newer version exists on the repo !!"
+    echo ""
+    sleep 2
+    $CURDIR/rploader.sh build $EVERSION
+    echo ""
 # ==============================================================================
 # Backup configuration
 # ==============================================================================
-cecho c "Backup Config file"
-echo ""
-$CURDIR/rploader.sh backup now 
-echo ""
-cecho c "Completed !! After reboot Install DSM."
-echo ""
+    cecho c "Backup Config file"
+    echo ""
+    $CURDIR/rploader.sh backup now 
+    echo ""
+    cecho c "Completed !! After reboot Install DSM."
+    echo ""
+fi
 # ==============================================================================
 # Reboot
 # ==============================================================================
@@ -442,7 +504,7 @@ then
     sleep 1
     cecho r "1"
     sleep 1
-    reboot
+    sudo reboot
 fi
 # ==============================================================================
 # End
