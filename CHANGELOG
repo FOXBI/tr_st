@@ -1,5 +1,9 @@
 ### Change LOG ###
 
+## update Update v1.4.6-r01 - 2022.04.07
+- 7.1-42661 Version is newly created, and the problem that the list is not printed when the new method is performed has been fixed.
+- Modification of menu output function for future installation of 7.1-42661 version
+
 ## update Update v1.4.6-r01 - 2022.04.03
 - Modified so that it can be run from a non-root tc account
 - 7.1.0-42621 Added feature to support installation
