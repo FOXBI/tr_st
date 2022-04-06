@@ -112,5 +112,5 @@ Follow the instructions to install (DS3622xs+ example)
 
 made a video of the setup process.
    
-[![tr_st](http://img.youtube.com/vi/yRTcdOK6-Ok/0.jpg)](https://youtu.be/yRTcdOK6-Ok) 
+[![tr_st](http://img.youtube.com/vi/Xuwokx8Ae2k/0.jpg)](https://youtu.be/Xuwokx8Ae2k) 
    
