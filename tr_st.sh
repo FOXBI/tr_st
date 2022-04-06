@@ -1,8 +1,8 @@
 #!/bin/bash
-ver="1.4.6-r01"
+ver="1.6.0-r01"
 #
 # Made by FOXBI
-# 2022.04.03
+# 2022.04.07
 #
 # ==============================================================================
 # Y or N Function
@@ -123,7 +123,8 @@ BRRAY=()
 if [ "$SYNOCHK" == "" ]
 then
     cecho c "Select Xpenology Model...\033[0;31m(Available Model Red Color)\033[00m"
-    export ACHK=`curl --no-progress-meter https://archive.synology.com/download/Os/DSM | grep noreferrer | awk -Fner\"\> '{print $2}'| egrep -vi "download|os|Parent" | sed "s/<\/a>//g" | egrep "^7" | head -1`
+    export ACHK=`curl --no-progress-meter https://archive.synology.com/download/Os/DSM | grep noreferrer | awk -Fner\"\> '{print $2}'| egrep -vi "download|os|Parent" | sed "s/<\/a>//g" | egrep "^7" | head -3 \
+                | awk -F- '{ if($3 ~ "^[0-9]") {print  $1"-"$2"-"$3} }' | head -1`
     while IFS= read -r LINE_A;
     do
         ACNT=$(($ACNT + 1))
@@ -234,7 +235,14 @@ then
             BMODEL=`echo $AMODEL | tr '[A-Z]' '[a-z]'`
             BMODEL=`echo $BMODEL"\."`
         fi
-        ECHK=`echo $ACHK | awk -F- '{print $1"-"$2}'`
+        ECHK=`curl --no-progress-meter https://archive.synology.com/download/Os/DSM | grep noreferrer | awk -Fner\"\> '{print $2}'| egrep -vi "download|os|Parent" | sed "s/<\/a>//g" | egrep "^7" | head -1 | awk -F- '{print $1"-"$2}'`
+        FCHK=`echo $ACHK | awk -F- '{print $1"-"$2}'`
+        if [ "$CVERSION" == "$FCHK" ]
+        then
+            ECHK=`echo $FCHK`
+        else
+            ECHK=`echo $ECHK`
+        fi
 
         EPLAT=`curl --no-progress-meter https://archive.synology.com/download/Os/DSM/$ACHK | grep noreferrer | awk -Fner\"\> '{print $2}'| grep "synology_" | sed "s/pat<\/a>//g" | sed "s/synology_//g" | grep -i "$BMODEL" | awk -F_ '{print $1}' | sed "s/$.//g"`
         EVERSION=`echo $EPLAT"-"$ECHK`
