@@ -1,6 +1,10 @@
 ### Change LOG ###
 
-## update Update v1.4.6-r01 - 2022.04.07
+## update Update v1.7.0-r01 - 2022.04.07
+- Add ext-manager.sh update process
+- Change the extension driver to be multi-selectable (ex> 57,13,14,10)
+
+## update Update v1.6.0-r01 - 2022.04.07
 - 7.1-42661 Version is newly created, and the problem that the list is not printed when the new method is performed has been fixed.
 - Modification of menu output function for future installation of 7.1-42661 version
 
