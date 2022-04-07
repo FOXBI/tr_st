@@ -1,5 +1,5 @@
 #!/bin/bash
-ver="1.6.0-r01"
+ver="1.7.0-r01"
 #
 # Made by FOXBI
 # 2022.04.07
@@ -437,6 +437,9 @@ else
     cecho c "Delete extension file..."
     rm -rf $CURDIR/redpill-load/custom/extensions/*
     echo ""
+    cecho c "Update ext-manager..."
+    $CURDIR/redpill-load/ext-manager.sh update
+    echo ""    
     cecho r "Add to Driver Repository..."
     echo ""
     READ_YN "Do you want Add Driver? Y/N :  "
@@ -460,16 +463,27 @@ else
             echo ""
             echo -e " ${IRRAY[@]}" | sed 's/\\ln/\n/g' | sed 's/\\lt/\t/g'
             echo ""
-            read -n3 -p " -> Select Number Enter : " I_O
+            read -n100 -p " -> Select Number Enter (To select multiple, separate them with , ): " I_O
             echo ""
-            I_O=$(($I_O - 1))
-            for (( i = 0; i < $ICNT; i++)); do
-                if [ "$I_O" == $i ]
-                then
-                    export IEXT=`echo "${IRRAY[$i]}" | sed 's/\\\ln//g' | sed 's/\\\lt//g' | awk '{print $2}'`
-                fi
-            done
-        $CURDIR/rploader.sh ext $EVERSION add https://raw.githubusercontent.com/pocopico/rp-ext/master/$IEXT/rpext-index.json
+            I_OCHK=`echo $I_O | grep , | wc -l`
+            if [ "$I_OCHK" -gt "0" ]
+            then
+                while read LINE_J;
+                do
+                    j=$((LINE_J - 1))
+                    IEXT=`echo "${IRRAY[$j]}" | sed 's/\\\ln//g' | sed 's/\\\lt//g' | awk '{print $2}'`
+                    $CURDIR/rploader.sh ext $EVERSION add https://raw.githubusercontent.com/pocopico/rp-ext/master/$IEXT/rpext-index.json
+                done < <(echo $I_O | tr ',' '\n')
+            else
+                I_O=$(($I_O - 1))
+                for (( i = 0; i < $ICNT; i++)); do
+                    if [ "$I_O" == $i ]
+                    then
+                        export IEXT=`echo "${IRRAY[$i]}" | sed 's/\\\ln//g' | sed 's/\\\lt//g' | awk '{print $2}'`
+                    fi
+                done
+                $CURDIR/rploader.sh ext $EVERSION add https://raw.githubusercontent.com/pocopico/rp-ext/master/$IEXT/rpext-index.json
+            fi
         echo ""
         READ_YN "Do you want add driver? Y/N :  "
         ICHK=$Y_N
