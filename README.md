@@ -111,6 +111,8 @@ After reboot you install DSM keep going
 Follow the instructions to install (DS3622xs+ example)
 
 made a video of the setup process.
+ 
+[![tr_st](http://img.youtube.com/vi/doQX3RDh0FQ/0.jpg)](https://youtu.be/doQX3RDh0FQ) 
    
 [![tr_st](http://img.youtube.com/vi/G996Y3pX1ws/0.jpg)](https://youtu.be/G996Y3pX1ws) 
    
