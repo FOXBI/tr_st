@@ -1,5 +1,10 @@
 ### Change LOG ###
 
+## update Update v2.2.0-r01 - 2022.04.14
+- 7.1-42661 Installation support (NEW & Migration)
+- Adjust variables and functions
+- 7.1.0-42621 RC and existing version installation support maintained
+
 ## update Update v1.7.0-r01 - 2022.04.07
 - Add ext-manager.sh update process
 - Change the extension driver to be multi-selectable (ex> 57,13,14,10)
