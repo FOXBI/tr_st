@@ -1,5 +1,9 @@
 ### Change LOG ###
 
+## update Update v2.2.1-r01 - 2022.04.16
+- When modifying GRUB, the value fixed to /dev/sdb for the boot partition is modified 
+  so that it can be changed automatically depending on the execution environment.
+
 ## update Update v2.2.0-r01 - 2022.04.14
 - 7.1-42661 Installation support (NEW & Migration)
 - Adjust variables and functions
