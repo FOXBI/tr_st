@@ -1,5 +1,5 @@
 #!/bin/bash
-ver="2.2.0-r01"
+ver="2.2.1-r01"
 #
 # Made by FOXBI
 # 2022.04.14
@@ -567,15 +567,16 @@ fi
 # ==============================================================================
 # Backup & GRUB Patch
 # ==============================================================================
-if [ ! -d /mnt/sdb1/boot/grub ]
+PCHK=`sudo fdisk -l | grep "*" | grep sd  | awk '{print $1}' | sed "s/\/dev\///g"`
+if [ ! -d /mnt/$PCHK/boot/grub ]
 then
-    mount /dev/sdb1
+    mount /dev/$PCHK
 fi
 echo ""
 cecho c "Backup Original File...."
 GTIME=`date +%Y%m%d%H%M%S`
 mkdir -p $CURDIR/ESXi_backup
-tar cvfP  $CURDIR/ESXi_backup/${AMODEL}_${GTIME}.tar /mnt/sdb1/boot/grub/grub.cfg > /dev/null 2>&1
+tar cvfP  $CURDIR/ESXi_backup/${AMODEL}_${GTIME}.tar /mnt/$PCHK/boot/grub/grub.cfg > /dev/null 2>&1
 sleep 1
 echo ""
 cecho c "Change Boot Config File....."
@@ -584,12 +585,12 @@ HCNT=`sudo fdisk -l | grep "*" | grep sda1 | wc -l`
 
 if [ "$GCNT" -eq "2" ] || [ "$HCNT" -eq "0" ]
 then
-    sed -i "s/hd0,msdos/hd1,msdos/g" /mnt/sdb1/boot/grub/grub.cfg
+    sed -i "s/hd0,msdos/hd1,msdos/g" /mnt/$PCHK/boot/grub/grub.cfg
 else
-    sed -i "s/hd1,msdos/hd0,msdos/g" /mnt/sdb1/boot/grub/grub.cfg
+    sed -i "s/hd1,msdos/hd0,msdos/g" /mnt/$PCHK/boot/grub/grub.cfg
 fi
 sleep 2
-umount /dev/sdb1 > /dev/null 2>&1
+umount /dev/$PCHK > /dev/null 2>&1
 # ==============================================================================
 # Backup configuration
 # ==============================================================================
