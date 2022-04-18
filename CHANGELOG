@@ -1,5 +1,9 @@
 ### Change LOG ###
 
+## Update v2.7.9-r01 - 2022.04.19
+- include tr_cb.sh
+- Support Create boot image & USB on Tinycore
+
 ## Update v2.2.1-r01 - 2022.04.16
 - When modifying GRUB, the value fixed to /dev/sdb for the boot partition is modified 
   so that it can be changed automatically depending on the execution environment.
