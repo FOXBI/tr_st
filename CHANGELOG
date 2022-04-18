@@ -1,23 +1,23 @@
 ### Change LOG ###
 
-## update Update v2.2.1-r01 - 2022.04.16
+## Update v2.2.1-r01 - 2022.04.16
 - When modifying GRUB, the value fixed to /dev/sdb for the boot partition is modified 
   so that it can be changed automatically depending on the execution environment.
 
-## update Update v2.2.0-r01 - 2022.04.14
+## Update v2.2.0-r01 - 2022.04.14
 - 7.1-42661 Installation support (NEW & Migration)
 - Adjust variables and functions
 - 7.1.0-42621 RC and existing version installation support maintained
 
-## update Update v1.7.0-r01 - 2022.04.07
+## Update v1.7.0-r01 - 2022.04.07
 - Add ext-manager.sh update process
 - Change the extension driver to be multi-selectable (ex> 57,13,14,10)
 
-## update Update v1.6.0-r01 - 2022.04.07
+## Update v1.6.0-r01 - 2022.04.07
 - 7.1-42661 Version is newly created, and the problem that the list is not printed when the new method is performed has been fixed.
 - Modification of menu output function for future installation of 7.1-42661 version
 
-## update Update v1.4.6-r01 - 2022.04.03
+## Update v1.4.6-r01 - 2022.04.03
 - Modified so that it can be run from a non-root tc account
 - 7.1.0-42621 Added feature to support installation
 - remake a manual video
