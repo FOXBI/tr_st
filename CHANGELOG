@@ -1,5 +1,8 @@
 ### Change LOG ###
 
+## Update v2.7.9-r02 - 2022.04.27
+- A typo was identified and corrected in the USB creation function
+
 ## Update v2.7.9-r01 - 2022.04.19
 - include tr_cb.sh
 - Support Create boot image & USB on Tinycore
