@@ -1,5 +1,9 @@
 ### Change LOG ###
 
+## Update v2.9.0-r01 - 2022.04.29
+- Changed to allow automatic pre-download of *.pat files with the changed link for version 42661, 42661-1
+- Reflects the change so that rploader builds version 42661 at once (reduces build time)
+
 ## Update v2.7.9-r02 - 2022.04.27
 - A typo was identified and corrected in the USB creation function
 
