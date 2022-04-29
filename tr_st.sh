@@ -1,8 +1,8 @@
 #!/bin/bash
-ver="2.7.9-r02"
+ver="2.9.0-r01"
 #
 # Made by FOXBI
-# 2022.04.27
+# 2022.04.29
 #
 # ==============================================================================
 # Y or N Function
@@ -108,6 +108,24 @@ EXDRIVER_FN () {
     done
 }
 # ==============================================================================
+# Pat Download Function 7.1-42661-1
+# ==============================================================================
+PATDL_FN () {
+    TCHK=`sudo fdisk -l | grep -A 3 "*" | grep "sd.3" | awk '{print "df | grep "$1}' | sh | awk '{print $NF}'`
+    mkdir -p $TCHK/auxfiles
+    cd $TCHK/auxfiles
+    DLMODEL=`echo $AMODEL | sed "s/\+/\%2B/g"`
+    TPMODEL=`echo $AMODEL | sed "s/\+/p/g" | tr '[A-Z]' '[a-z]'`
+    TVERSION=`echo $EVERSION | awk -F- '{print $NF}'`
+
+    echo ""    
+    cecho r "Pat file pre-download...($TCHK/auxfiles/${TPMODEL}_${TVERSION}.pat)"
+    echo ""
+    curl -o ${TPMODEL}_${TVERSION}.pat https://global.download.synology.com/download/DSM/release/7.1/${TVERSION}-1/DSM_${DLMODEL}_${TVERSION}.pat
+    cd $CURDIR
+    echo ""
+}
+# ==============================================================================
 # Process Function
 # ==============================================================================
 clear
@@ -129,21 +147,10 @@ then
     DSMCHK=`sudo fdisk -l | grep fd | wc -l`
     if [ "$DSMCHK" -ge "2" ]
     then
-        echo -e "\033[0;31mDSM installed detect!! \033[0;33m Do you want Migration 7.1 \033[0;31m ?\033[00m" | tr '\n' ' '
-        READ_YN "Y/N : "
-        BCHK=$Y_N
-        if [ "$BCHK" == "Y" ] || [ "$BCHK" == "y" ]
-        then
-            MGCHK=Y
-        elif [ "$BCHK" == "N" ] || [ "$BCHK" == "n" ]
-        then
-            MGCHK=n
-        else
-            echo ""
-            echo "Wrong choice. please run again..."
-            echo ""    
-            exit 0
-        fi        
+        echo -e "\033[0;31mDSM installed detect!! \033[0;33m Continue Process...\033[00m"
+        echo ""
+        sleep 2
+        MGCHK=n
     fi
     NEWCHK=y
 elif [ "$ACHK" == "N" ] || [ "$ACHK" == "n" ]
@@ -275,6 +282,7 @@ else
 fi
 echo ""
 echo -e " ${ARRAY[@]}" | sed 's/\\ln/\n/g' | sed 's/\\lt/\t/g'
+echo ""
 read -n3 -p " -> Select Number Enter : " A_O
 echo ""
 A_O=$(($A_O - 1))
@@ -323,6 +331,7 @@ then
     done < <(curl --no-progress-meter https://archive.synology.com/download/Os/DSM | grep noreferrer | awk -Fner\"\> '{print $2}'| egrep -vi "download|os|Parent" | sed "s/<\/a>//g" | egrep "^7|^6.2.4" | awk -F- '{print $1"-"$2}' | sort -u)
     echo ""
     echo -e " ${CRRAY[@]}" | sed 's/\\ln/\n/g' | sed 's/\\lt/\t/g'
+    echo ""
     read -n1 -p " -> Select Number Enter : " C_O
     echo ""
     C_O=$(($C_O - 1))
@@ -370,14 +379,7 @@ then
         echo ""
         cecho c "Rploader update..."
         echo ""
-        if [[ "$EVERSION" =~ "42661" ]]
-        then
-            SVERSION=`echo $EVERSION | awk -F- '{print $1"-7.0.1-42218"}'`        
-            CVERSION=`echo $CVERSION | sed "s/7.1-/7.1.0-/g"`
-            $CURDIR/rploader.sh download $SVERSION 2>&1 > /dev/null 
-        else
-            $CURDIR/rploader.sh download $EVERSION 2>&1 > /dev/null                             
-        fi
+        $CURDIR/rploader.sh download $EVERSION 2>&1 > /dev/null                             
 
         if [ $? -eq 99 ]
         then
@@ -427,13 +429,7 @@ then
         echo ""
         cecho c "rploader update..."
         echo ""
-        if [[ "$EVERSION" =~ "42661" ]]
-        then
-            SVERSION=`echo $EVERSION | awk -F- '{print $1"-7.0.1-42218"}'`          
-            $CURDIR/rploader.sh download $SVERSION 2>&1 > /dev/null 
-        else
-            $CURDIR/rploader.sh download $EVERSION 2>&1 > /dev/null                    
-        fi
+        $CURDIR/rploader.sh download $EVERSION 2>&1 > /dev/null                    
 
         CCHECK=`ls $CURDIR/redpill-load/config/$AMODEL | wc -l`
         CCNT=
@@ -542,18 +538,9 @@ then
     echo ""
 elif [[ "$EVERSION" =~ "42661" ]] && [ "$NEWCHK" == "y" ]
 then
-    sleep 2
-    if [ "$MGCHK" = "n" ]
-    then
-        $CURDIR/rploader.sh build $SVERSION
-        if [ ! -d /mnt/sdb3/auxfiles ]
-        then
-            $CURDIR/rploader.sh clean now
-            $CURDIR/rploader.sh build $SVERSION
-        fi
-    fi
     $CURDIR/rploader.sh clean now
     EXDRIVER_FN
+    PATDL_FN
     $CURDIR/rploader.sh build $EVERSION
     $CURDIR/rploader.sh clean now
     rm -rf /mnt/sdb3/auxfiles
