@@ -1,5 +1,5 @@
 #!/bin/bash
-ver="2.9.0-r01"
+ver="2.9.0-r02"
 #
 # Made by FOXBI
 # 2022.04.29
@@ -370,7 +370,12 @@ then
         then
             ECHK=`echo $FCHK`
         else
-            ECHK=`echo $ECHK`
+            if [[ "$CVERSION" =~ "42661" ]]
+            then
+                ECHK=`echo $ECHK`
+            else
+                ECHK=`echo $CVERSION`
+            fi
         fi
 
         EPLAT=`curl --no-progress-meter https://archive.synology.com/download/Os/DSM/$ACHK | grep noreferrer | awk -Fner\"\> '{print $2}'| grep "synology_" | sed "s/pat<\/a>//g" | sed "s/synology_//g" | grep -i "$BMODEL" | awk -F_ '{print $1}' | sed "s/$.//g"`
