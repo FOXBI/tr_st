@@ -1,8 +1,8 @@
 #!/bin/bash
-ver="2.9.0-r02"
+ver="3.0.0-r03"
 #
 # Made by FOXBI
-# 2022.04.29
+# 2023.05.31
 #
 # ==============================================================================
 # Y or N Function
@@ -108,7 +108,7 @@ EXDRIVER_FN () {
     done
 }
 # ==============================================================================
-# Pat Download Function 7.1-42661-1
+# Pat Download Function 7.2-64561 & 7.1-42661-1
 # ==============================================================================
 PATDL_FN () {
     TCHK=`sudo fdisk -l | grep -A 3 "*" | grep "sd.3" | awk '{print "df | grep "$1}' | sh | awk '{print $NF}'`
@@ -121,7 +121,12 @@ PATDL_FN () {
     echo ""    
     cecho r "Pat file pre-download...($TCHK/auxfiles/${TPMODEL}_${TVERSION}.pat)"
     echo ""
-    curl -o ${TPMODEL}_${TVERSION}.pat https://global.download.synology.com/download/DSM/release/7.1/${TVERSION}-1/DSM_${DLMODEL}_${TVERSION}.pat
+    if [ "$TVERSION" == "64561" ]
+    then
+        curl -o ${TPMODEL}_${TVERSION}.pat https://global.download.synology.com/download/DSM/release/7.2/${TVERSION}/DSM_${DLMODEL}_${TVERSION}.pat
+    else
+        curl -o ${TPMODEL}_${TVERSION}.pat https://global.download.synology.com/download/DSM/release/7.1/${TVERSION}-1/DSM_${DLMODEL}_${TVERSION}.pat
+    fi
     cd $CURDIR
     echo ""
 }
@@ -138,7 +143,7 @@ fi
 echo ""
 cecho c "Tinycore Rploader Support Tool ver. \033[0;31m"$ver"\033[00m - FOXBI"
 echo ""
-echo -e "\033[0;31mDo you want to install \033[0;33m 7.1 \033[0;31m ?\033[00m" | tr '\n' ' '
+echo -e "\033[0;31mDo you want to install \033[0;33m New Version 7.x \033[0;31m ?\033[00m" | tr '\n' ' '
 READ_YN "Y/N : "
 ACHK=$Y_N
 if [ "$ACHK" == "Y" ] || [ "$ACHK" == "y" ]
@@ -213,7 +218,7 @@ else
     if [ "$NEWCHK" == "y" ]
     then
         echo ""
-        cecho c "Redpill fullupgrade for 7.1-42661 ..."
+        cecho c "Redpill fullupgrade for 7.x .."
         echo ""
         sudo cp $CURDIR/user_config.json /tmp/user_config.json_bak
         $CURDIR/rploader.sh fullupgrade now
@@ -305,7 +310,7 @@ if [ "$SYNOCHK" == "" ]
 then
     while read LINE_C;
     do
-        if [[ "$LINE_C" =~ "42661" ]] && [ "$NEWCHK" == "n" ]
+        if [[ "$LINE_C" =~ "42661" ]] || [[ "$LINE_C" =~ "42962" ]] || [[ "$LINE_C" =~ "64561" ]] && [ "$NEWCHK" == "n" ]
         then 
             continue
         else
@@ -313,14 +318,14 @@ then
             DCNT=$(($CCNT%5))
             if [ "$BCNT" -eq "0" ]
             then
-                if [[ "$LINE_C" =~ "42661" ]] && [ "$NEWCHK" == "y" ]
+                if [[ "$LINE_C" =~ "42661" ]] || [[ "$LINE_C" =~ "42962" ]] || [[ "$LINE_C" =~ "64561" ]] && [ "$NEWCHK" == "y" ]
                 then
                     CRRAY+=("\033[0;31m$CCNT) $LINE_C\ln\033[00m");
                 else
                     CRRAY+=("$CCNT) $LINE_C\ln");
                 fi
             else
-            if [[ "$LINE_C" =~ "42661" ]] && [ "$NEWCHK" == "y" ]
+            if [[ "$LINE_C" =~ "42661" ]] || [[ "$LINE_C" =~ "42962" ]] || [[ "$LINE_C" =~ "64561" ]] && [ "$NEWCHK" == "y" ]
                 then
                     CRRAY+=("\033[0;31m$CCNT) $LINE_C\lt\033[00m");
                 else        
@@ -370,7 +375,7 @@ then
         then
             ECHK=`echo $FCHK`
         else
-            if [[ "$CVERSION" =~ "42661" ]]
+            if [[ "$CVERSION" =~ "42661" ]] || [[ "$CVERSION" =~ "42962" ]] || [[ "$CVERSION" =~ "64561" ]]
             then
                 ECHK=`echo $ECHK`
             else
@@ -379,7 +384,9 @@ then
         fi
 
         EPLAT=`curl --no-progress-meter https://archive.synology.com/download/Os/DSM/$ACHK | grep noreferrer | awk -Fner\"\> '{print $2}'| grep "synology_" | sed "s/pat<\/a>//g" | sed "s/synology_//g" | grep -i "$BMODEL" | awk -F_ '{print $1}' | sed "s/$.//g"`
-        EVERSION=`echo $EPLAT"-"$ECHK | sed "s/7.1-/7.1.0-/g"`
+        B2MODEL=`echo $BMODEL | sed "s/_/ds/g" | sed "s/\\\\\.//g" | sed "s/xs+/xsp/g"`
+        #EVERSION=`echo $EPLAT"-"$ECHK | sed "s/7.1-/7.1.0-/g" | sed "s/7.2-/7.2.0-/g"`
+        EVERSION=`echo $B2MODEL"-"$ECHK | sed "s/7.1-/7.1.0-/g" | sed "s/7.2-/7.2.0-/g"`
 
         echo ""
         cecho c "Rploader update..."
@@ -401,10 +408,10 @@ then
         cecho c "Select Platform...."
         while read LINE_E;
         do
-            if [[ "$LINE_E" =~ "42661" ]] && [ "$NEWCHK" == "n" ]
+            if [[] "$LINE_E" =~ "42661" ]] || [[ "$LINE_E" =~ "42962" ]] || [[ "$LINE_E" =~ "64561" ]] && [ "$NEWCHK" == "n" ]
             then
                 continue
-            elif [[ "$LINE_E" =~ "42621" ]] && [ "$RCCHK" == "n" ]
+            elif [[ "$LINE_E" =~ "42661" ]] || [[ "$LINE_E" =~ "42962" ]] || [[ "$LINE_E" =~ "64561" ]] && [ "$RCCHK" == "n" ]
             then
                 continue                
             else
@@ -442,10 +449,10 @@ then
         CRRAY=()
         while read LINE_C;
         do
-            if [[ "$LINE_C" =~ "42661" ]] && [ "$NEWCHK" == "n" ]
+            if [[ "$LINE_C" =~ "42661" ]] || [[ "$LINE_C" =~ "42962" ]] || [[ "$LINE_C" =~ "64561" ]] && [ "$NEWCHK" == "n" ]
             then
                 continue
-            elif [[ "$LINE_C" =~ "42621" ]] && [ "$RCCHK" == "n" ]
+            elif [[ "$LINE_C" =~ "42661" ]] || [[ "$LINE_C" =~ "42962" ]] || [[ "$LINE_C" =~ "64561" ]] && [ "$RCCHK" == "n" ]
             then
                 continue                
             elif [[ "$LINE_C" =~ "template" ]] 
@@ -456,10 +463,10 @@ then
                 DCNT=$(($CCNT%3))            
                 if [ "$DCNT" -eq "0" ]
                 then
-                    if [[ "$LINE_C" =~ "42621" ]] && [ "$RCCHK" == "y" ]
+                    if [[ "$LINE_C" =~ "42661" ]] || [[] "$LINE_C" =~ "42962" ]] || [[ "$LINE_C" =~ "64561" ]] && [ "$RCCHK" == "y" ]
                     then
                         CRRAY+=("\033[0;31m$CCNT) $LINE_C\ln\033[00m");
-                    elif [[ "$LINE_C" =~ "42661" ]] && [ "$NEWCHK" == "y" ]
+                    elif [[ "$LINE_C" =~ "42661" ]] || [[ "$LINE_C" =~ "42962" ]] || [[ "$LINE_C" =~ "64561" ]] && [ "$NEWCHK" == "y" ]
                     then
                         CRRAY+=("\033[0;31m$CCNT) $LINE_C\ln\033[00m");                          
                     else
@@ -541,7 +548,7 @@ then
     sleep 3
     $CURDIR/rploader.sh postupdate $EVERSION
     echo ""
-elif [[ "$EVERSION" =~ "42661" ]] && [ "$NEWCHK" == "y" ]
+elif [[ "$EVERSION" =~ "42661" ]] || [[ "$EVERSION" =~ "42962" ]] || [[ "$EVERSION" =~ "64561" ]] && [ "$NEWCHK" == "y" ]
 then
     $CURDIR/rploader.sh clean now
     EXDRIVER_FN
@@ -553,6 +560,7 @@ then
     echo ""
 else
     sleep 2
+    redpill-load    
     $CURDIR/rploader.sh build $EVERSION
     echo ""
 fi
@@ -589,6 +597,29 @@ then
 else
     sudo sed -i "s/hd1,msdos/hd0,msdos/g" /mnt/$PCHK/boot/grub/grub.cfg
 fi
+
+BSCHK=`cat /mnt/$PCHK/boot/grub/grubenv | grep saved_entry | awk -F= '{print $2}'`
+echo ""
+cecho c "Select you want Fist boot (SATA / USB / TCRP Friend / TC Image Build) ? : "
+echo ""    
+echo "1) SATA   2) USB   3) TCRP Friend   4) TC Image Build"
+echo ""
+read -n2 -p " -> Select Number Enter : " B_S
+echo ""
+if [ "$B_S" == "1" ]
+then
+    BSCHNG=`cat /mnt/$PCHK/boot/grub/grub.cfg  | grep menuentry | grep SATA | awk -F\' '{print $2}'`
+elif  [ "$B_S" == "2" ]
+then
+    BSCHNG=`cat /mnt/$PCHK/boot/grub/grub.cfg  | grep menuentry | grep USB | awk -F\' '{print $2}'`
+elif [ "$B_S" == "2" ]
+then
+    BSCHNG=`cat /mnt/$PCHK/boot/grub/grub.cfg  | grep menuentry | grep Friend | awk -F\' '{print $2}'`
+else
+    BSCHNG=`cat /mnt/$PCHK/boot/grub/grub.cfg  | grep menuentry | grep Build | awk -F\' '{print $2}'`
+fi
+sudo sed -i "s/$BSCHK/$BSCHNG/g" /mnt/$PCHK/boot/grub/grubenv
+
 sleep 2
 # ==============================================================================
 # Extra Boot image or USB Create Action
